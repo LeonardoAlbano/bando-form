@@ -92,7 +92,6 @@ export const steps: Step[] = [
     kind: "finalChoice",
     title:
       "Se você chegou até aqui, já percebeu que o Bando não é apenas mais uma comunidade sobre tráfego.",
-    // você pode adicionar mais texto depois, por enquanto use só a pergunta de fit:
     fieldName: "final_fit",
     options: [
       { value: "yes", label: "Faz sentido!" },
