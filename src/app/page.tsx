@@ -6,6 +6,7 @@ import { IntroStep } from "@/components/wizard/intro-step";
 import { NameStep } from "@/components/wizard/name-step";
 import { WhatsappStep } from "@/components/wizard/whatsapp-step";
 import { StoryStep } from "@/components/wizard/story-step";
+import { StructureIntroStep } from "@/components/wizard/structure-intro-step";
 
 type Answers = {
   name?: string;
@@ -34,6 +35,10 @@ export default function HomePage() {
     setStepIndex(4);
   };
 
+  const handleStructureIntroContinue = () => {
+    setStepIndex(5);
+  };
+
   return (
     <main className="min-h-screen flex items-center">
       {stepIndex === 0 && <IntroStep onContinue={handleIntroContinue} />}
@@ -47,6 +52,10 @@ export default function HomePage() {
       )}
 
       {stepIndex === 3 && <StoryStep onContinue={handleStoryContinue} />}
+
+      {stepIndex === 4 && (
+        <StructureIntroStep onContinue={handleStructureIntroContinue} />
+      )}
     </main>
   );
 }
