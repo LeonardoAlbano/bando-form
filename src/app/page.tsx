@@ -7,10 +7,12 @@ import { NameStep } from "@/components/wizard/name-step";
 import { WhatsappStep } from "@/components/wizard/whatsapp-step";
 import { StoryStep } from "@/components/wizard/story-step";
 import { StructureIntroStep } from "@/components/wizard/structure-intro-step";
+import { ChallengeStep } from "@/components/wizard/challenge-step";
 
 type Answers = {
   name?: string;
   whatsapp?: string;
+  challenge?: string;
 };
 
 export default function HomePage() {
@@ -39,6 +41,11 @@ export default function HomePage() {
     setStepIndex(5);
   };
 
+  const handleChallengeSubmit = (challenge: string) => {
+    setAnswers((prev) => ({ ...prev, challenge }));
+    setStepIndex(6);
+  };
+
   return (
     <main className="min-h-screen flex items-center">
       {stepIndex === 0 && <IntroStep onContinue={handleIntroContinue} />}
@@ -55,6 +62,10 @@ export default function HomePage() {
 
       {stepIndex === 4 && (
         <StructureIntroStep onContinue={handleStructureIntroContinue} />
+      )}
+
+      {stepIndex === 5 && (
+        <ChallengeStep stepNumber={3} onSubmit={handleChallengeSubmit} />
       )}
     </main>
   );
