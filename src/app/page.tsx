@@ -10,6 +10,7 @@ import { StructureIntroStep } from "@/components/wizard/structure-intro-step";
 import { ChallengeStep } from "@/components/wizard/challenge-step";
 import { BlockedActionStep } from "@/components/wizard/blocked-action-step";
 import { ControlLevelStep } from "@/components/wizard/control-level-step";
+import { ContentPillarsStep } from "@/components/wizard/content-pillars-step";
 
 type Answers = {
   name?: string;
@@ -60,6 +61,10 @@ export default function HomePage() {
     setStepIndex(8);
   };
 
+  const handleContentPillarsContinue = () => {
+    setStepIndex(9);
+  };
+
   return (
     <main className="min-h-screen flex items-center">
       {stepIndex === 0 && <IntroStep onContinue={handleIntroContinue} />}
@@ -91,6 +96,10 @@ export default function HomePage() {
 
       {stepIndex === 7 && (
         <ControlLevelStep stepNumber={5} onSubmit={handleControlLevelSubmit} />
+      )}
+
+      {stepIndex === 8 && (
+        <ContentPillarsStep onContinue={handleContentPillarsContinue} />
       )}
     </main>
   );
