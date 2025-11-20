@@ -9,12 +9,14 @@ import { StoryStep } from "@/components/wizard/story-step";
 import { StructureIntroStep } from "@/components/wizard/structure-intro-step";
 import { ChallengeStep } from "@/components/wizard/challenge-step";
 import { BlockedActionStep } from "@/components/wizard/blocked-action-step";
+import { ControlLevelStep } from "@/components/wizard/control-level-step";
 
 type Answers = {
   name?: string;
   whatsapp?: string;
   challenge?: string;
   blockedBehavior?: string;
+  controlLevel?: number;
 };
 
 export default function HomePage() {
@@ -53,6 +55,11 @@ export default function HomePage() {
     setStepIndex(7);
   };
 
+  const handleControlLevelSubmit = (level: number) => {
+    setAnswers((prev) => ({ ...prev, controlLevel: level }));
+    setStepIndex(8);
+  };
+
   return (
     <main className="min-h-screen flex items-center">
       {stepIndex === 0 && <IntroStep onContinue={handleIntroContinue} />}
@@ -80,6 +87,10 @@ export default function HomePage() {
           stepNumber={4}
           onSubmit={handleBlockedBehaviorSubmit}
         />
+      )}
+
+      {stepIndex === 7 && (
+        <ControlLevelStep stepNumber={5} onSubmit={handleControlLevelSubmit} />
       )}
     </main>
   );
