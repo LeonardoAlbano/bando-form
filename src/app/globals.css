@@ -120,3 +120,65 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Style Button for DDI - number of country */
+
+.phone-input {
+  width: 100%;
+}
+
+.phone-input .react-international-phone-input-container {
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.7);
+  overflow: hidden;
+}
+
+.phone-input .react-international-phone-country-selector,
+.phone-input .react-international-phone-country-selector button {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.phone-input__field {
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding-left: 0.5rem;
+  padding-right: 0;
+  color: #f9fafb;
+}
+
+.phone-input input.react-international-phone-input.phone-input__field {
+  font-size: clamp(1.125rem, 2.5vw, 1.75rem) !important;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+@media (min-width: 1024px) {
+  .phone-input input.react-international-phone-input.phone-input__field {
+    font-size: 1.875rem !important;
+  }
+}
+
+.phone-input__field::placeholder {
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.phone-input__field:focus {
+  outline: none;
+}
+
+.phone-input .react-international-phone-input-container:focus-within {
+  border-bottom-color: #ffffff;
+}
