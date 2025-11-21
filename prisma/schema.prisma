@@ -1,0 +1,26 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Application {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  name              String
+  whatsapp          String
+  mainChallenge     String
+  reactionToBlock   String
+  controlLevel      Int
+  finalFit          ApplicationFit
+  notJoinReason     String?
+}
+
+enum ApplicationFit {
+  YES
+  NO
+}
