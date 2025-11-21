@@ -140,7 +140,7 @@ export function BlockedActionStep({
             />
 
             <div className="flex items-center gap-3 pt-4">
-              <Button type="submit" size="lg">
+              <Button type="submit" size="lg" className="cursor-pointer">
                 OK
               </Button>
             </div>

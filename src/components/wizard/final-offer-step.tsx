@@ -191,7 +191,7 @@ export function FinalOfferStep({ stepNumber, onSubmit }: FinalOfferStepProps) {
               />
 
               <div className="flex items-center gap-3 pt-2">
-                <Button type="submit" size="lg">
+                <Button type="submit" size="lg" className="cursor-pointer">
                   OK
                 </Button>
                 <span className="text-xs sm:text-sm text-gray-300">

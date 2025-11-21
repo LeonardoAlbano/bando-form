@@ -19,7 +19,12 @@ export function StructureIntroStep({ onContinue }: StructureIntroStepProps) {
         </h1>
 
         <div className="pt-4 flex items-center gap-3">
-          <Button type="button" size="lg" onClick={onContinue}>
+          <Button
+            type="button"
+            size="lg"
+            onClick={onContinue}
+            className="cursor-pointer"
+          >
             Continue
           </Button>
           <span className="text-xs sm:text-sm text-gray-300">

@@ -72,11 +72,16 @@ export function WhatsappStep({ stepNumber, onSubmit }: WhatsappStepProps) {
           />
 
           <div className="flex items-center gap-3 pt-4">
-            <Button type="submit" size="lg" variant="default">
+            <Button
+              type="submit"
+              size="lg"
+              variant="default"
+              className="cursor-pointer"
+            >
               OK
             </Button>
             <span className="text-xs sm:text-sm text-gray-300">
-              press Enter ↵
+              press <b>Enter</b> ↵
             </span>
           </div>
         </form>
