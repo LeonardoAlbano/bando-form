@@ -11,6 +11,9 @@ import { ChallengeStep } from "@/components/wizard/challenge-step";
 import { BlockedActionStep } from "@/components/wizard/blocked-action-step";
 import { ControlLevelStep } from "@/components/wizard/control-level-step";
 import { ContentPillarsStep } from "@/components/wizard/content-pillars-step";
+import { FinalOfferStep } from "@/components/wizard/final-offer-step";
+import { FeedbackNoStep } from "@/components/wizard/feedback-no-step";
+import { ThankYouStep } from "@/components/wizard/thank-you-step";
 
 type Answers = {
   name?: string;
@@ -18,6 +21,8 @@ type Answers = {
   challenge?: string;
   blockedBehavior?: string;
   controlLevel?: number;
+  finalFit?: "yes" | "no";
+  finalReason?: string;
 };
 
 export default function HomePage() {
@@ -65,6 +70,21 @@ export default function HomePage() {
     setStepIndex(9);
   };
 
+  const handleFinalFitSubmit = (fit: "yes" | "no") => {
+    setAnswers((prev) => ({ ...prev, finalFit: fit }));
+
+    if (fit === "no") {
+      setStepIndex(10);
+    } else {
+      setStepIndex(11);
+    }
+  };
+
+  const handleFeedbackNoSubmit = (reason: string) => {
+    setAnswers((prev) => ({ ...prev, finalReason: reason }));
+    setStepIndex(11);
+  };
+
   return (
     <main className="min-h-screen flex items-center">
       {stepIndex === 0 && <IntroStep onContinue={handleIntroContinue} />}
@@ -101,6 +121,16 @@ export default function HomePage() {
       {stepIndex === 8 && (
         <ContentPillarsStep onContinue={handleContentPillarsContinue} />
       )}
+
+      {stepIndex === 9 && (
+        <FinalOfferStep stepNumber={6} onSubmit={handleFinalFitSubmit} />
+      )}
+
+      {stepIndex === 10 && (
+        <FeedbackNoStep stepNumber={7} onSubmit={handleFeedbackNoSubmit} />
+      )}
+
+      {stepIndex === 11 && <ThankYouStep name={answers.name} />}
     </main>
   );
 }
