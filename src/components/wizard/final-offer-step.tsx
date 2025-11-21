@@ -195,7 +195,7 @@ export function FinalOfferStep({ stepNumber, onSubmit }: FinalOfferStepProps) {
                   OK
                 </Button>
                 <span className="text-xs sm:text-sm text-gray-300">
-                  press Enter ↵
+                  press <b>Enter</b> ↵
                 </span>
               </div>
             </form>

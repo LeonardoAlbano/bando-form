@@ -35,6 +35,7 @@ export function NameStep({ stepNumber, onSubmit }: NameStepProps) {
   });
 
   const handleSubmit = (values: NameFormValues) => {
+    console.log("[NameStep] valores validados:", values);
     onSubmit(values.name.trim());
   };
 
@@ -76,7 +77,7 @@ export function NameStep({ stepNumber, onSubmit }: NameStepProps) {
               OK
             </Button>
             <span className="text-xs sm:text-sm text-gray-300">
-              press Enter ↵
+              press <b>Enter</b> ↵
             </span>
           </div>
         </form>

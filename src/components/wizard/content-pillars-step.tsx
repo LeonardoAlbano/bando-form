@@ -60,7 +60,7 @@ export function ContentPillarsStep({ onContinue }: ContentPillarsStepProps) {
             Continue
           </Button>
           <span className="text-xs sm:text-sm text-gray-300">
-            press Enter ↵
+            press <b>Enter</b> ↵
           </span>
         </div>
       </section>

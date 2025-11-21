@@ -86,7 +86,7 @@ export function FeedbackNoStep({ stepNumber, onSubmit }: FeedbackNoStepProps) {
                 Submit
               </Button>
               <span className="text-xs sm:text-sm text-gray-300">
-                press Cmd ⌘ + Enter ↵
+                press <b>Enter</b> ↵
               </span>
             </div>
           </form>
