@@ -125,6 +125,7 @@
 
 .phone-input {
   width: 100%;
+  --react-international-phone-text-color: #fff;
 }
 
 .phone-input .react-international-phone-input-container {
