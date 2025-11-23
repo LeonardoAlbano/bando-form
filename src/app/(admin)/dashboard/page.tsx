@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ApplicationService } from "@/server/application/application.service";
+import type { Application } from "@prisma/client";
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
@@ -32,7 +33,7 @@ export default async function DashboardPage() {
             </tr>
           </thead>
           <tbody>
-            {applications.map((app) => (
+            {applications.map((app: Application) => (
               <tr key={app.id} className="border-t border-white/10">
                 <td className="px-3 py-2 text-xs text-gray-300">
                   {new Date(app.createdAt).toLocaleString("pt-BR")}
