@@ -54,12 +54,15 @@ type BlockedFormValues = z.infer<typeof blockedSchema>;
 
 type BlockedActionStepProps = {
   stepNumber: number;
-  onSubmit: (behavior: BlockedFormValues["behavior"]) => void;
+  onSubmit: (behavior: string) => void;
+  onBack?: () => void;
+  canGoBack?: boolean;
 };
-
 export function BlockedActionStep({
   stepNumber,
   onSubmit,
+  onBack,
+  canGoBack,
 }: BlockedActionStepProps) {
   const form = useForm<BlockedFormValues>({
     resolver: zodResolver(blockedSchema),
@@ -73,7 +76,7 @@ export function BlockedActionStep({
   };
 
   return (
-    <BaseStepLayout>
+    <BaseStepLayout onBack={onBack} canGoBack={canGoBack}>
       <div className="space-y-8 w-full max-w-3xl">
         <header className="space-y-3">
           <p className="text-xs sm:text-sm text-gray-300">{stepNumber} →</p>

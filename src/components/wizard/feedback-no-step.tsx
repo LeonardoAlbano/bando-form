@@ -24,9 +24,16 @@ type FeedbackValues = z.infer<typeof feedbackSchema>;
 type FeedbackNoStepProps = {
   stepNumber: number;
   onSubmit: (reason: string) => void;
+  onBack?: () => void;
+  canGoBack?: boolean;
 };
 
-export function FeedbackNoStep({ stepNumber, onSubmit }: FeedbackNoStepProps) {
+export function FeedbackNoStep({
+  stepNumber,
+  onSubmit,
+  onBack,
+  canGoBack,
+}: FeedbackNoStepProps) {
   const form = useForm<FeedbackValues>({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
@@ -39,7 +46,7 @@ export function FeedbackNoStep({ stepNumber, onSubmit }: FeedbackNoStepProps) {
   };
 
   return (
-    <BaseStepLayout>
+    <BaseStepLayout onBack={onBack} canGoBack={canGoBack}>
       <div className="w-full max-w-3xl space-y-8">
         <header className="space-y-3">
           <p className="text-xs sm:text-sm text-gray-300">{stepNumber} →</p>

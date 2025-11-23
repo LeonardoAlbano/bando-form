@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 
 type StoryStepProps = {
   onContinue: () => void;
+  onBack?: () => void;
+  canGoBack?: boolean;
 };
 
 const paragraphs = [
@@ -17,9 +19,9 @@ const paragraphs = [
   "Se você se vê nesse cenário e precisa blindar sua operação para sair do incêndio e poder focar no ataque, esse mapa é para você!",
 ];
 
-export function StoryStep({ onContinue }: StoryStepProps) {
+export function StoryStep({ onContinue, onBack, canGoBack }: StoryStepProps) {
   return (
-    <BaseStepLayout>
+    <BaseStepLayout onBack={onBack} canGoBack={canGoBack}>
       <section className="space-y-6 max-w-3xl">
         <p className="text-5xl leading-none text-white">“</p>
 

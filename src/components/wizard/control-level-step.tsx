@@ -24,11 +24,15 @@ type ControlLevelFormValues = z.infer<typeof controlLevelSchema>;
 type ControlLevelStepProps = {
   stepNumber: number;
   onSubmit: (level: number) => void;
+  onBack?: () => void;
+  canGoBack?: boolean;
 };
 
 export function ControlLevelStep({
   stepNumber,
   onSubmit,
+  onBack,
+  canGoBack,
 }: ControlLevelStepProps) {
   const form = useForm<ControlLevelFormValues>({
     resolver: zodResolver(controlLevelSchema),
@@ -43,7 +47,7 @@ export function ControlLevelStep({
   };
 
   return (
-    <BaseStepLayout>
+    <BaseStepLayout onBack={onBack} canGoBack={canGoBack}>
       <div className="space-y-8 w-full max-w-3xl">
         <header className="space-y-3">
           <p className="text-xs sm:text-sm text-gray-300">{stepNumber} →</p>

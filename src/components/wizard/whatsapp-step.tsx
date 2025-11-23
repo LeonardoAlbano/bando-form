@@ -26,9 +26,18 @@ type WhatsappFormValues = z.infer<typeof whatsappSchema>;
 type WhatsappStepProps = {
   stepNumber: number;
   onSubmit: (whatsapp: string) => void;
+  defaultValue?: string;
+  onBack?: () => void;
+  canGoBack?: boolean;
 };
 
-export function WhatsappStep({ stepNumber, onSubmit }: WhatsappStepProps) {
+export function WhatsappStep({
+  stepNumber,
+  onSubmit,
+  defaultValue,
+  onBack,
+  canGoBack,
+}: WhatsappStepProps) {
   const form = useForm<WhatsappFormValues>({
     resolver: zodResolver(whatsappSchema),
     defaultValues: {
@@ -41,7 +50,7 @@ export function WhatsappStep({ stepNumber, onSubmit }: WhatsappStepProps) {
   };
 
   return (
-    <BaseStepLayout>
+    <BaseStepLayout onBack={onBack} canGoBack={canGoBack}>
       <header className="mb-8 space-y-2">
         <p className="text-xs sm:text-sm text-gray-300">{stepNumber} →</p>
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white leading-tight">

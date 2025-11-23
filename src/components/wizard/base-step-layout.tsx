@@ -15,7 +15,7 @@ export function BaseStepLayout({
   canGoBack,
 }: BaseStepLayoutProps) {
   return (
-    <div className="w-full min-h-screen flex justify-center items-center pt-10 px-4 sm:px-6">
+    <div className="w-full min-h-screen flex justify-center items-center py-10 px-4 sm:px-6">
       <div className="w-full max-w-4xl">
         <div className="flex items-center mb-6">
           {canGoBack && onBack && (

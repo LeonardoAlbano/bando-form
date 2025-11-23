@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 
 type ContentPillarsStepProps = {
   onContinue: () => void;
+  onBack?: () => void;
+  canGoBack?: boolean;
 };
 
 const PILLARS = [
@@ -35,9 +37,13 @@ const PILLARS = [
   },
 ];
 
-export function ContentPillarsStep({ onContinue }: ContentPillarsStepProps) {
+export function ContentPillarsStep({
+  onContinue,
+  onBack,
+  canGoBack,
+}: ContentPillarsStepProps) {
   return (
-    <BaseStepLayout>
+    <BaseStepLayout onBack={onBack} canGoBack={canGoBack}>
       <section className="space-y-8 max-w-3xl">
         <p className="text-5xl leading-none text-white">“</p>
 

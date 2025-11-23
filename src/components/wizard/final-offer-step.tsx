@@ -34,9 +34,16 @@ type FinalFitValues = z.infer<typeof finalFitSchema>;
 type FinalOfferStepProps = {
   stepNumber: number;
   onSubmit: (fit: "yes" | "no") => void;
+  onBack?: () => void;
+  canGoBack?: boolean;
 };
 
-export function FinalOfferStep({ stepNumber, onSubmit }: FinalOfferStepProps) {
+export function FinalOfferStep({
+  stepNumber,
+  onSubmit,
+  onBack,
+  canGoBack,
+}: FinalOfferStepProps) {
   const form = useForm<FinalFitValues>({
     resolver: zodResolver(finalFitSchema),
     defaultValues: {
@@ -49,7 +56,7 @@ export function FinalOfferStep({ stepNumber, onSubmit }: FinalOfferStepProps) {
   };
 
   return (
-    <BaseStepLayout>
+    <BaseStepLayout onBack={onBack} canGoBack={canGoBack}>
       <div className="space-y-8 w-full max-w-3xl">
         <header className="space-y-3">
           <p className="text-xs sm:text-sm text-gray-300">{stepNumber} →</p>

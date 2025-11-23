@@ -5,11 +5,17 @@ import { Button } from "@/components/ui/button";
 
 type StructureIntroStepProps = {
   onContinue: () => void;
+  onBack?: () => void;
+  canGoBack?: boolean;
 };
 
-export function StructureIntroStep({ onContinue }: StructureIntroStepProps) {
+export function StructureIntroStep({
+  onContinue,
+  onBack,
+  canGoBack,
+}: StructureIntroStepProps) {
   return (
-    <BaseStepLayout>
+    <BaseStepLayout onBack={onBack} canGoBack={canGoBack}>
       <section className="space-y-6 max-w-3xl">
         <p className="text-5xl leading-none text-white">“</p>
 

@@ -24,9 +24,16 @@ type ChallengeFormValues = z.infer<typeof challengeSchema>;
 type ChallengeStepProps = {
   stepNumber: number;
   onSubmit: (challenge: string) => void;
+  onBack?: () => void;
+  canGoBack?: boolean;
 };
 
-export function ChallengeStep({ stepNumber, onSubmit }: ChallengeStepProps) {
+export function ChallengeStep({
+  stepNumber,
+  onSubmit,
+  onBack,
+  canGoBack,
+}: ChallengeStepProps) {
   const form = useForm<ChallengeFormValues>({
     resolver: zodResolver(challengeSchema),
     defaultValues: {
@@ -39,7 +46,8 @@ export function ChallengeStep({ stepNumber, onSubmit }: ChallengeStepProps) {
   };
 
   return (
-    <BaseStepLayout>
+    <BaseStepLayout onBack={onBack} canGoBack={canGoBack}>
+      {" "}
       <div className="space-y-8 w-full max-w-3xl">
         <header className="space-y-3">
           <p className="text-xs sm:text-sm text-gray-300">{stepNumber} →</p>

@@ -24,6 +24,7 @@ export default function HomePage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const canGoBack = stepIndex > 0 && stepIndex < 11;
 
   async function handleFinishWizard(currentAnswers: Answers) {
     if (hasSubmitted) return;
@@ -138,45 +139,87 @@ export default function HomePage() {
           onSubmit={handleNameSubmit}
           defaultValue={answers.name}
           onBack={goBack}
-          canGoBack={stepIndex > 0}
+          canGoBack={canGoBack}
         />
       )}
 
       {stepIndex === 2 && (
-        <WhatsappStep stepNumber={2} onSubmit={handleWhatsappSubmit} />
+        <WhatsappStep
+          stepNumber={2}
+          onSubmit={handleWhatsappSubmit}
+          // já já a gente adiciona esses props no componente
+          onBack={goBack}
+          canGoBack={canGoBack}
+        />
       )}
 
-      {stepIndex === 3 && <StoryStep onContinue={handleStoryContinue} />}
+      {stepIndex === 3 && (
+        <StoryStep
+          onContinue={handleStoryContinue}
+          onBack={goBack}
+          canGoBack={canGoBack}
+        />
+      )}
 
       {stepIndex === 4 && (
-        <StructureIntroStep onContinue={handleStructureIntroContinue} />
+        <StructureIntroStep
+          onContinue={handleStructureIntroContinue}
+          onBack={goBack}
+          canGoBack={canGoBack}
+        />
       )}
 
       {stepIndex === 5 && (
-        <ChallengeStep stepNumber={3} onSubmit={handleChallengeSubmit} />
+        <ChallengeStep
+          stepNumber={3}
+          onSubmit={handleChallengeSubmit}
+          onBack={goBack}
+          canGoBack={canGoBack}
+        />
       )}
 
       {stepIndex === 6 && (
         <BlockedActionStep
           stepNumber={4}
           onSubmit={handleBlockedBehaviorSubmit}
+          onBack={goBack}
+          canGoBack={canGoBack}
         />
       )}
 
       {stepIndex === 7 && (
-        <ControlLevelStep stepNumber={5} onSubmit={handleControlLevelSubmit} />
+        <ControlLevelStep
+          stepNumber={5}
+          onSubmit={handleControlLevelSubmit}
+          onBack={goBack}
+          canGoBack={canGoBack}
+        />
       )}
 
       {stepIndex === 8 && (
-        <ContentPillarsStep onContinue={handleContentPillarsContinue} />
+        <ContentPillarsStep
+          onContinue={handleContentPillarsContinue}
+          onBack={goBack}
+          canGoBack={canGoBack}
+        />
       )}
 
       {stepIndex === 9 && (
-        <FinalOfferStep stepNumber={6} onSubmit={handleFinalFitSubmit} />
+        <FinalOfferStep
+          stepNumber={6}
+          onSubmit={handleFinalFitSubmit}
+          onBack={goBack}
+          canGoBack={canGoBack}
+        />
       )}
 
       {stepIndex === 10 && (
-        <FeedbackNoStep stepNumber={7} onSubmit={handleFeedbackNoSubmit} />
+        <FeedbackNoStep
+          stepNumber={7}
+          onSubmit={handleFeedbackNoSubmit}
+          onBack={goBack}
+          canGoBack={canGoBack}
+        />
       )}
 
       {stepIndex === 11 && <ThankYouStep name={answers.name} />}
