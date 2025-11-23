@@ -1,7 +1,19 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ApplicationService } from "@/server/application/application.service";
-import type { Application } from "@prisma/client";
+
+type DashboardApplication = {
+  id: string;
+  name: string;
+  whatsapp: string;
+  mainChallenge: string;
+  reactionToBlock: string | null;
+  controlLevel: number;
+  finalFit: string | null;
+  notJoinReason: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
@@ -12,7 +24,7 @@ export default async function DashboardPage() {
   }
 
   const service = new ApplicationService();
-  const applications = await service.listApplications();
+  const applications: DashboardApplication[] = await service.listApplications();
 
   return (
     <main className="min-h-screen bg-black text-white p-8">
@@ -33,7 +45,7 @@ export default async function DashboardPage() {
             </tr>
           </thead>
           <tbody>
-            {applications.map((app: Application) => (
+            {applications.map((app) => (
               <tr key={app.id} className="border-t border-white/10">
                 <td className="px-3 py-2 text-xs text-gray-300">
                   {new Date(app.createdAt).toLocaleString("pt-BR")}
