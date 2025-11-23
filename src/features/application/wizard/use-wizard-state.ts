@@ -46,6 +46,7 @@ export function useWizardState(initialStep = 0) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (stepIndex >= 11) return;
+    
 
     const payload: WizardState = { stepIndex, answers };
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
