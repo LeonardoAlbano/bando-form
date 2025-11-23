@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useWizardState } from "@/features/application/wizard/use-wizard-state";
+import type { Answers } from "@/features/application/wizard/types";
 
 import { IntroStep } from "@/components/wizard/intro-step";
 import { NameStep } from "@/components/wizard/name-step";
@@ -16,19 +18,10 @@ import { FeedbackNoStep } from "@/components/wizard/feedback-no-step";
 import { ThankYouStep } from "@/components/wizard/thank-you-step";
 import { submitApplication } from "@/lib/application-client";
 
-type Answers = {
-  name?: string;
-  whatsapp?: string;
-  challenge?: string;
-  blockedBehavior?: string;
-  controlLevel?: number;
-  finalFit?: "yes" | "no";
-  finalReason?: string;
-};
-
 export default function HomePage() {
-  const [stepIndex, setStepIndex] = useState(0);
-  const [answers, setAnswers] = useState<Answers>({});
+  const { stepIndex, answers, goToStep, goBack, updateAnswers, reset } =
+    useWizardState(0);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -65,6 +58,7 @@ export default function HomePage() {
       const saved = await submitApplication(payload);
       console.log("Salvo com sucesso:", saved);
       setHasSubmitted(true);
+      reset();
     } catch (err) {
       console.error("Erro ao enviar aplicação:", err);
     } finally {
@@ -79,59 +73,59 @@ export default function HomePage() {
   }, [stepIndex, answers, hasSubmitted]);
 
   const handleIntroContinue = () => {
-    setStepIndex(1);
+    goToStep(1);
   };
 
   const handleNameSubmit = (name: string) => {
-    setAnswers((prev) => ({ ...prev, name }));
-    setStepIndex(2);
+    updateAnswers({ name });
+    goToStep(2);
   };
 
   const handleWhatsappSubmit = (whatsapp: string) => {
-    setAnswers((prev) => ({ ...prev, whatsapp }));
-    setStepIndex(3);
+    updateAnswers({ whatsapp });
+    goToStep(3);
   };
 
   const handleStoryContinue = () => {
-    setStepIndex(4);
+    goToStep(4);
   };
 
   const handleStructureIntroContinue = () => {
-    setStepIndex(5);
+    goToStep(5);
   };
 
   const handleChallengeSubmit = (challenge: string) => {
-    setAnswers((prev) => ({ ...prev, challenge }));
-    setStepIndex(6);
+    updateAnswers({ challenge });
+    goToStep(6);
   };
 
   const handleBlockedBehaviorSubmit = (behavior: string) => {
-    setAnswers((prev) => ({ ...prev, blockedBehavior: behavior }));
-    setStepIndex(7);
+    updateAnswers({ blockedBehavior: behavior });
+    goToStep(7);
   };
 
   const handleControlLevelSubmit = (level: number) => {
-    setAnswers((prev) => ({ ...prev, controlLevel: level }));
-    setStepIndex(8);
+    updateAnswers({ controlLevel: level });
+    goToStep(8);
   };
 
   const handleContentPillarsContinue = () => {
-    setStepIndex(9);
+    goToStep(9);
   };
 
   const handleFinalFitSubmit = (fit: "yes" | "no") => {
-    setAnswers((prev) => ({ ...prev, finalFit: fit }));
+    updateAnswers({ finalFit: fit });
 
     if (fit === "no") {
-      setStepIndex(10);
+      goToStep(10);
     } else {
-      setStepIndex(11);
+      goToStep(11);
     }
   };
 
   const handleFeedbackNoSubmit = (reason: string) => {
-    setAnswers((prev) => ({ ...prev, finalReason: reason }));
-    setStepIndex(11);
+    updateAnswers({ finalReason: reason });
+    goToStep(11);
   };
 
   return (
@@ -139,7 +133,13 @@ export default function HomePage() {
       {stepIndex === 0 && <IntroStep onContinue={handleIntroContinue} />}
 
       {stepIndex === 1 && (
-        <NameStep stepNumber={1} onSubmit={handleNameSubmit} />
+        <NameStep
+          stepNumber={1}
+          onSubmit={handleNameSubmit}
+          defaultValue={answers.name}
+          onBack={goBack}
+          canGoBack={stepIndex > 0}
+        />
       )}
 
       {stepIndex === 2 && (

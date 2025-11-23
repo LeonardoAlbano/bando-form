@@ -24,23 +24,31 @@ type NameFormValues = z.infer<typeof nameSchema>;
 type NameStepProps = {
   stepNumber: number;
   onSubmit: (name: string) => void;
+  defaultValue?: string;
+  onBack?: () => void;
+  canGoBack?: boolean;
 };
 
-export function NameStep({ stepNumber, onSubmit }: NameStepProps) {
+export function NameStep({
+  stepNumber,
+  onSubmit,
+  defaultValue,
+  onBack,
+  canGoBack,
+}: NameStepProps) {
   const form = useForm<NameFormValues>({
     resolver: zodResolver(nameSchema),
     defaultValues: {
-      name: "",
+      name: defaultValue ?? "",
     },
   });
 
   const handleSubmit = (values: NameFormValues) => {
-    console.log("[NameStep] valores validados:", values);
     onSubmit(values.name.trim());
   };
 
   return (
-    <BaseStepLayout>
+    <BaseStepLayout onBack={onBack} canGoBack={canGoBack}>
       <header className="mb-8 space-y-2">
         <p className="text-xs sm:text-sm text-gray-300">{stepNumber} →</p>
 
