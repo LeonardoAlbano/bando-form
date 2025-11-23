@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { IntroStep } from "@/components/wizard/intro-step";
 import { NameStep } from "@/components/wizard/name-step";
@@ -14,6 +14,7 @@ import { ContentPillarsStep } from "@/components/wizard/content-pillars-step";
 import { FinalOfferStep } from "@/components/wizard/final-offer-step";
 import { FeedbackNoStep } from "@/components/wizard/feedback-no-step";
 import { ThankYouStep } from "@/components/wizard/thank-you-step";
+import { submitApplication } from "@/lib/application-client";
 
 type Answers = {
   name?: string;
@@ -28,6 +29,54 @@ type Answers = {
 export default function HomePage() {
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  async function handleFinishWizard(currentAnswers: Answers) {
+    if (hasSubmitted) return;
+
+    if (
+      !currentAnswers.name ||
+      !currentAnswers.whatsapp ||
+      !currentAnswers.challenge ||
+      !currentAnswers.blockedBehavior ||
+      currentAnswers.controlLevel === undefined ||
+      !currentAnswers.finalFit
+    ) {
+      console.error("Respostas incompletas:", currentAnswers);
+      return;
+    }
+
+    const payload = {
+      name: currentAnswers.name,
+      whatsapp: currentAnswers.whatsapp,
+      mainChallenge: currentAnswers.challenge,
+      reactionToBlock: currentAnswers.blockedBehavior,
+      controlLevel: currentAnswers.controlLevel,
+      finalFit: currentAnswers.finalFit === "yes" ? "YES" : "NO",
+      notJoinReason:
+        currentAnswers.finalFit === "no"
+          ? currentAnswers.finalReason ?? null
+          : null,
+    } as const;
+
+    try {
+      setIsSubmitting(true);
+      const saved = await submitApplication(payload);
+      console.log("Salvo com sucesso:", saved);
+      setHasSubmitted(true);
+    } catch (err) {
+      console.error("Erro ao enviar aplicação:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  useEffect(() => {
+    if (stepIndex === 11 && !hasSubmitted) {
+      void handleFinishWizard(answers);
+    }
+  }, [stepIndex, answers, hasSubmitted]);
 
   const handleIntroContinue = () => {
     setStepIndex(1);

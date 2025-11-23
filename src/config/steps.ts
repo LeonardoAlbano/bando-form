@@ -1,4 +1,3 @@
-// src/config/steps.ts
 import { Step } from "@/types/steps";
 
 export const steps: Step[] = [

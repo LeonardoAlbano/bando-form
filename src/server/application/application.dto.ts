@@ -1,19 +1,13 @@
-// Data Transfer Objects and domain types for the Application entity
+import { z } from "zod";
 
-export type ApplicationFit = "YES" | "NO";
+export const createApplicationSchema = z.object({
+  name: z.string().min(1),
+  whatsapp: z.string().min(1),
+  mainChallenge: z.string().min(1),
+  reactionToBlock: z.string().min(1),
+  controlLevel: z.coerce.number().int().min(1).max(5),
+  finalFit: z.enum(["YES", "NO"]),
+  notJoinReason: z.string().nullable().optional(),
+});
 
-export interface CreateApplicationDTO {
-  name: string;
-  whatsapp: string;
-  mainChallenge: string;
-  reactionToBlock: string;
-  controlLevel: number;
-  finalFit: ApplicationFit;
-  notJoinReason?: string | null;
-}
-
-export interface Application extends CreateApplicationDTO {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+export type CreateApplicationDTO = z.infer<typeof createApplicationSchema>;
