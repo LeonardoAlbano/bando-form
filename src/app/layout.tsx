@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClarityScript } from "@/components/analytics/clarity-script";
+import {
+  GoogleTagManagerBody,
+  GoogleTagManagerHead,
+} from "@/components/analytics/google-tag-manager";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +29,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
+      <head>
+        <GoogleTagManagerHead />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <GoogleTagManagerBody />
+
         <ClarityScript />
         <div
           className="min-h-screen bg-cover bg-center"
