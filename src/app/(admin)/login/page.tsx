@@ -1,11 +1,9 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { useRouter } from "next/navigation";
-import { loginAction } from "./actions";
+import { signIn } from "next-auth/react";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -15,16 +13,16 @@ export default function AdminLoginPage() {
     setIsSubmitting(true);
 
     const formData = new FormData(event.currentTarget);
-    const result = await loginAction(formData);
+    const email = String(formData.get("email") ?? "");
+    const password = String(formData.get("password") ?? "");
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const result = await signIn("credentials", {
+      email,
+      password,
+      callbackUrl: "/dashboard",
+    });
     setIsSubmitting(false);
-
-    if (!result.ok) {
-      setError(result.error ?? "Erro ao autenticar");
-      return;
-    }
-
-    router.push("/dashboard");
   }
 
   return (

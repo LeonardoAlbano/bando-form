@@ -34,7 +34,6 @@ type WhatsappStepProps = {
 export function WhatsappStep({
   stepNumber,
   onSubmit,
-  defaultValue,
   onBack,
   canGoBack,
 }: WhatsappStepProps) {
@@ -72,6 +71,7 @@ export function WhatsappStep({
                     onChange={field.onChange}
                     placeholder="(11) 96123-4567"
                     className="phone-input"
+                    data-clarity-mask="true"
                     inputClassName="phone-input__field"
                   />
                 </FormControl>

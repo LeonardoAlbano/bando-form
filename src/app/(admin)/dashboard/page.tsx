@@ -1,30 +1,17 @@
-import { cookies } from "next/headers";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { ApplicationService } from "@/server/application/application.service";
-
-type DashboardApplication = {
-  id: string;
-  name: string;
-  whatsapp: string;
-  mainChallenge: string;
-  reactionToBlock: string | null;
-  controlLevel: number;
-  finalFit: string | null;
-  notJoinReason: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import type { Application } from "@prisma/client";
 
 export default async function DashboardPage() {
-  const cookieStore = await cookies();
-  const auth = cookieStore.get("admin_auth")?.value;
+  const session = await auth();
 
-  if (auth !== "ok") {
+  if (!session || session.user?.role !== "admin") {
     redirect("/login");
   }
 
   const service = new ApplicationService();
-  const applications: DashboardApplication[] = await service.listApplications();
+  const applications: Application[] = await service.listApplications();
 
   return (
     <main className="min-h-screen bg-black text-white p-8">

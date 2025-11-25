@@ -68,6 +68,7 @@ export function NameStep({
                   <Input
                     {...field}
                     autoFocus
+                    data-clarity-mask="true"
                     placeholder="Type your answer here..."
                     className="bg-transparent border-0 border-b border-white/60 rounded-none px-0 
                                text-base sm:text-lg md:text-2xl 

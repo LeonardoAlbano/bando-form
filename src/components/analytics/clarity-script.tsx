@@ -3,7 +3,6 @@ import Script from "next/script";
 export function ClarityScript() {
   const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
 
-  // Se não tiver ID (ex: em dev sem configurar), não faz nada
   if (!clarityId) return null;
 
   return (

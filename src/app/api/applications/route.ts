@@ -5,10 +5,22 @@ import {
   CreateApplicationDTO,
 } from "@/server/application/application.dto";
 import { ZodError } from "zod";
+import { cookies } from "next/headers";
+import { checkRateLimit } from "@/server/rate-limit";
+
 
 const service = new ApplicationService();
 
 export async function POST(req: NextRequest) {
+    const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+
+      if (!checkRateLimit(ip)) {
+    return NextResponse.json(
+      { message: "Too many requests" },
+      { status: 429 }
+    );
+  }
+
   try {
     const body = await req.json();
 
@@ -28,11 +40,13 @@ export async function POST(req: NextRequest) {
     }
 
     if (error instanceof Error) {
+      console.error("[POST /api/applications]", error);
       return NextResponse.json(
-        { message: "Internal server error", detail: error.message },
+        { message: "Internal server error" },
         { status: 500 }
       );
     }
+
 
     return NextResponse.json(
       { message: "Unknown error" },
@@ -42,15 +56,13 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
-  try {
-    const apps = await service.listApplications();
-    return NextResponse.json(apps);
-  } catch (error: unknown) {
-    console.error("[GET /api/applications] error", error);
+  const cookieStore = await cookies();
+  const session = cookieStore.get("admin_auth");
 
-    return NextResponse.json(
-      { message: "Internal server error" },
-      { status: 500 }
-    );
+  if (!session || session.value !== "logged-in") {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
+
+  const apps = await service.listApplications();
+  return NextResponse.json(apps);
 }
