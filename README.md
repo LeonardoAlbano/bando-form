@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bando Application Wizard
 
-## Getting Started
+Multi-step application form built with **Next.js App Router** for collecting detailed answers from prospects and reviewing them via a secure admin dashboard.
 
-First, run the development server:
+This project is designed as a client-facing application, with attention to security, performance and maintainability.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework:** Next.js 16 (App Router, Server Components)
+- **Language:** TypeScript
+- **UI:** Tailwind CSS, shadcn/ui
+- **Forms & Validation:**
+  - React Hook Form
+  - Zod (schema validation on client and server)
+- **Database:** PostgreSQL with Prisma ORM
+- **Auth:** Auth.js / NextAuth (credentials provider)
+- **Analytics (optional):**
+  - Microsoft Clarity
+  - Google Tag Manager
+- **Other:**
+  - Custom HTTP security headers via `next.config.ts`
+  - Simple in-memory rate limiting for the public API
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Features
 
-To learn more about Next.js, take a look at the following resources:
+### Public application flow
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Multi-step wizard to collect:
+  - Name
+  - WhatsApp contact
+  - Main challenge
+  - Reaction to “block” situations
+  - Perceived control level (1–5)
+  - Final fit (“YES”/“NO”) and optional reason
+- Client-side validation with Zod + React Hook Form.
+- Answers are persisted in the browser (localStorage) so the user does not lose progress.
+- Final submission is sent to `/api/applications` and stored in PostgreSQL via Prisma.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Admin dashboard
 
-## Deploy on Vercel
+- Protected admin route: `/dashboard`.
+- Authentication using **NextAuth** (credentials provider) with:
+  - Admin email and password loaded from environment variables.
+  - JWT-based sessions and `role = "admin"` attached to the session.
+- Server-side protection in the dashboard using `auth()` from `src/auth.ts`:
+  - Only users with `session.user.role === "admin"` can access.
+- Table view of all applications:
+  - Ordered by creation date (newest first).
+  - Shows date/time, name, WhatsApp, main challenge, control level and final fit.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Security & hardening
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Sensitive configuration (database URLs, admin credentials, auth secret, analytics IDs) are **never hard-coded** and must be provided via environment variables.
+- Custom HTTP security headers defined in `next.config.ts`:
+  - `X-Frame-Options: DENY`
+  - `X-Content-Type-Options: nosniff`
+  - `Referrer-Policy: strict-origin-when-cross-origin`
+- Basic rate limiting for `/api/applications` using an in-memory sliding window keyed by IP.
+- Optional analytics (Clarity, GTM) are only loaded if the corresponding public env variables are set.
+
+---
+
+## Project structure
+
+Main files and folders:
+
+```txt
+.
+├─ prisma/
+│  ├─ schema.prisma           # Application model and enum
+│  ├─ migrations/             # Initial migration for the Application table
+│  └─ prisma.config.ts        # Uses DIRECT_URL for CLI/migrations
+├─ src/
+│  ├─ app/
+│  │  ├─ (public)/
+│  │  │  └─ page.tsx          # Landing + application wizard entry
+│  │  ├─ (admin)/
+│  │  │  ├─ login/page.tsx    # Admin login screen
+│  │  │  └─ dashboard/page.tsx# Protected admin dashboard
+│  │  └─ api/
+│  │     └─ applications/
+│  │        └─ route.ts       # POST application endpoint (+ rate limiting, validation)
+│  ├─ components/
+│  │  ├─ wizard/              # Wizard steps + base layout
+│  │  ├─ analytics/           # Clarity + GTM helpers
+│  │  └─ ui/                  # Reusable UI components (shadcn/ui)
+│  ├─ features/
+│  │  └─ application/
+│  │     └─ wizard/           # Wizard state hook, types, etc.
+│  ├─ server/
+│  │  ├─ application/         # Service + repository layer for Application
+│  │  ├─ db/                  # Prisma client configured with PostgreSQL pool
+│  │  └─ rate-limit.ts        # Simple in-memory rate limiter
+│  └─ lib/
+│     └─ application-client.ts# Client helper to POST applications to the API
+├─ src/auth.ts                # NextAuth/Auth.js integration
+├─ auth.config.ts             # Auth configuration (providers, callbacks)
+├─ next-auth.d.ts             # TypeScript module augmentation for NextAuth
+├─ next.config.ts             # Next.js config + security headers
+└─ README.md
