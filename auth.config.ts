@@ -1,4 +1,3 @@
-// auth.config.ts
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import type { JWT } from "next-auth/jwt";
@@ -24,40 +23,29 @@ const authConfig = {
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPassword = process.env.ADMIN_PASSWORD;
 
-        console.log("DEBUG AUTH ENV", {
-          adminEmail,
-          hasPassword: !!adminPassword,
-          adminPasswordPreview: adminPassword?.slice(0, 5),
-        });
-
         if (!adminEmail || !adminPassword) {
           console.error(
-            "Admin credentials are not set in environment variables."
+            "Admin credentials are not set in environment variables.",
           );
           return null;
         }
 
         if (email !== adminEmail) {
-          console.log("AUTH FAILED: email mismatch");
           return null;
         }
 
         if (password !== adminPassword) {
-          console.log("AUTH FAILED: password mismatch");
           return null;
         }
 
-        const user = {
+        return {
           id: "admin",
           name: "Administrator",
           email: adminEmail,
           role: "admin" as const,
         };
-
-        console.log("AUTH OK for", user.email);
-
-        return user;
       },
+
     }),
   ],
 

@@ -1,8 +1,11 @@
 import { ApplicationRepository } from "./application.repository";
-import { CreateApplicationDTO } from "./application.dto";
+import type { CreateApplicationDTO } from "./application.dto";
 
 export class ApplicationService {
-  private readonly repo = new ApplicationRepository();
+  constructor(
+    private readonly repo: Pick<ApplicationRepository, "create" | "findAll"> =
+      new ApplicationRepository(),
+  ) {}
 
   async createApplication(input: CreateApplicationDTO) {
     return this.repo.create(input);

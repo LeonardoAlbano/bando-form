@@ -1,7 +1,9 @@
-const WINDOW_MS = 60_000; 
-const MAX_REQUESTS = 20;
+export const WINDOW_MS = 60_000;
+export const MAX_REQUESTS = 20;
 
-const hits = new Map<string, { count: number; windowStart: number }>();
+type HitRecord = { count: number; windowStart: number };
+
+const hits = new Map<string, HitRecord>();
 
 export function checkRateLimit(key: string): boolean {
   const now = Date.now();
@@ -17,4 +19,8 @@ export function checkRateLimit(key: string): boolean {
   record.count += 1;
   hits.set(key, record);
   return true;
+}
+
+export function resetRateLimit() {
+  hits.clear();
 }
