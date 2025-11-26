@@ -123,6 +123,14 @@
 
 /* Style Button for DDI - number of country */
 
+.react-international-phone-country-selector-dropdown {
+  background: #bfcde0 !important;
+}
+
+.react-international-phone-country-selector-dropdown:hover {
+  background: black !important;
+}
+
 .phone-input {
   width: 100%;
   --react-international-phone-text-color: #fff;
